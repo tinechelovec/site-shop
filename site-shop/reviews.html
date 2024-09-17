@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Отзывы</title>
+    <style>
+        body {
+            font-family: 'Helvetica', sans-serif;
+            background-color: #f4f5f7;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        header {
+            background-color: #4c51bf;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+            font-size: 2.5em;
+        }
+
+        nav {
+            background-color: #6b7280;
+            padding: 15px;
+            text-align: center;
+        }
+
+        nav a {
+            margin: 0 20px;
+            text-decoration: none;
+            color: #fff;
+            font-weight: bold;
+        }
+
+        footer {
+            background-color: #6b7280;
+            color: #f4f5f7;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .reviews-section {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .reviews-section h2 {
+            text-align: center;
+        }
+
+        .reviews-section form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .reviews-section form input[type="text"],
+        .reviews-section form textarea {
+            padding: 10px;
+            font-size: 1em;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 100%;
+        }
+
+        /* Убираем возможность ручного изменения размеров текстовой области */
+        .reviews-section form textarea {
+            resize: none;
+        }
+
+        .reviews-section form button {
+            padding: 10px;
+            font-size: 1.2em;
+            background-color: #4c51bf;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .reviews-section form button:hover {
+            background-color: #667eea;
+        }
+
+        .review {
+            padding: 10px;
+            background-color: #f4f5f7;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            color: #333; /* Цвет текста отзывов для светлой темы */
+            overflow: hidden;
+        }
+
+        .review .review-nick {
+            font-weight: bold;
+        }
+
+        .dark-mode {
+            background-color: #36393f;
+            color: #f4f5f7;
+        }
+
+        .dark-mode header {
+            background-color: #202225;
+        }
+
+        .dark-mode nav {
+            background-color: #2f3136;
+        }
+
+        .dark-mode .reviews-section {
+            background-color: #2f3136;
+            color: #f4f5f7;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .dark-mode .review {
+            background-color: #2f3136;
+            color: #f4f5f7; /* Цвет текста отзывов для тёмной темы */
+        }
+
+        .dark-mode footer {
+            background-color: #202225;
+            color: #b9bbbe;
+        }
+
+        .theme-toggle-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            margin: 0;
+        }
+
+        .theme-toggle-btn img {
+            width: 30px;
+            height: 30px;
+            transition: opacity 0.3s ease;
+        }
+
+        .dark-mode .theme-toggle-btn img {
+            content: url('/server/луна.png');
+        }
+
+        .light-mode .theme-toggle-btn img {
+            content: url('/server/солнце.png');
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Отзывы</h1>
+</header>
+
+<nav>
+    <a href="index.html">Главная</a>
+    <a href="about.html">О нас</a>
+    <a href="contact.html">Контакты</a>
+    <a href="reviews.html">Отзывы</a>
+</nav>
+
+<!-- Переключатель темы -->
+<button id="toggle-theme" class="theme-toggle-btn" onclick="toggleTheme()">
+    <img src="/server/луна.png" alt="Переключить тему">
+</button>
+
+<div class="reviews-section">
+    <h2>Оставьте ваш отзыв</h2>
+
+    <!-- Форма для добавления отзывов -->
+    <form id="reviewForm">
+        <input type="text" id="nickname" placeholder="Ваш ник" required>
+        <textarea id="reviewText" placeholder="Ваш отзыв" rows="5" required></textarea>
+        <button type="button" onclick="addReview()">Отправить</button>
+    </form>
+
+    <div id="reviews-container">
+        <!-- Отзывы будут добавляться сюда -->
+    </div>
+</div>
+
+<footer>
+    <p>© 2024 JW Shop. Все права защищены.</p>
+</footer>
+
+<script>
+    // Загружаем отзывы из localStorage
+    const reviews = JSON.parse(localStorage.getItem('reviews')) || [];
+
+    function addReview() {
+        const nickname = document.getElementById('nickname').value;
+        const reviewText = document.getElementById('reviewText').value;
+
+        if (nickname && reviewText) {
+            const review = {
+                nick: nickname,
+                text: reviewText
+            };
+
+            reviews.push(review);
+            localStorage.setItem('reviews', JSON.stringify(reviews)); // Сохраняем отзывы в localStorage
+            displayReviews();
+
+            // Очищаем форму
+            document.getElementById('nickname').value = '';
+            document.getElementById('reviewText').value = '';
+        } else {
+            alert('Пожалуйста, заполните все поля.');
+        }
+    }
+
+    function displayReviews() {
+        const reviewsContainer = document.getElementById('reviews-container');
+        reviewsContainer.innerHTML = '';
+
+        reviews.forEach(review => {
+            const reviewElement = document.createElement('div');
+            reviewElement.classList.add('review');
+            reviewElement.innerHTML = `
+                <p class="review-nick">${review.nick}</p>
+                <p>${review.text}</p>
+            `;
+            reviewsContainer.appendChild(reviewElement);
+        });
+    }
+
+    function toggleTheme() {
+        document.body.classList.toggle('dark-mode');
+        document.body.classList.toggle('light-mode');
+        const currentTheme = document.body.classList.contains('dark-mode') ? 'dark' : 'light';
+        localStorage.setItem('theme', currentTheme);
+        updateThemeIcon();
+    }
+
+    function updateThemeIcon() {
+        const icon = document.querySelector('#toggle-theme img');
+        if (document.body.classList.contains('dark-mode')) {
+            icon.src = '/server/луна.png';
+        } else {
+            icon.src = '/server/солнце.png';
+        }
+    }
+
+    window.onload = function() {
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark') {
+            document.body.classList.add('dark-mode');
+            document.body.classList.remove('light-mode');
+        } else {
+            document.body.classList.add('light-mode');
+            document.body.classList.remove('dark-mode');
+        }
+        updateThemeIcon();
+
+        // Отображаем отзывы при загрузке страницы
+        displayReviews();
+    }
+</script>
+
+</body>
+</html>

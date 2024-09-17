@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Регистрация</title>
+    <style>
+        body {
+            font-family: 'Helvetica', sans-serif;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+
+        .form-container {
+            margin: 50px auto;
+            padding: 20px;
+            width: 300px;
+            background-color: #f4f5f7;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-container input {
+            width: 90%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        .form-container button {
+            padding: 10px 20px;
+            background-color: #4c51bf;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .form-container button:hover {
+            background-color: #667eea;
+        }
+    </style>
+</head>
+<body>
+    <h1>Регистрация</h1>
+    <div class="form-container">
+        <input type="text" id="name" placeholder="Имя" required>
+        <input type="email" id="email" placeholder="Email" required>
+        <input type="password" id="password" placeholder="Пароль" required>
+        <button onclick="register()">Зарегистрироваться</button>
+    </div>
+
+    <script>
+        function register() {
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            if (name && email && password) {
+                const userProfile = { name, email, password };
+                localStorage.setItem('userProfile', JSON.stringify(userProfile));
+                alert('Регистрация успешна!');
+                window.location.href = 'profile.html'; // Переход на страницу профиля
+            } else {
+                alert('Пожалуйста, заполните все поля');
+            }
+        }
+    </script>
+</body>
+</html>

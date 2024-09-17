@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JW Shop - Контакты</title>
+    <style id="theme-style">
+        body {
+            font-family: 'Helvetica', sans-serif;
+            background-color: #f4f5f7;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        header {
+            background-color: #4c51bf;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+            font-size: 2.5em;
+        }
+
+        nav {
+            background-color: #6b7280;
+            padding: 15px;
+            text-align: center;
+        }
+
+        nav a {
+            margin: 0 20px;
+            text-decoration: none;
+            color: #fff;
+            font-weight: bold;
+        }
+
+        .content {
+            padding: 20px;
+            text-align: center;
+        }
+
+        footer {
+            background-color: #6b7280;
+            color: #f4f5f7;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .dark-mode {
+            background-color: #36393f;
+            color: #f4f5f7;
+        }
+
+        .dark-mode header {
+            background-color: #202225;
+        }
+
+        .dark-mode nav {
+            background-color: #2f3136;
+        }
+
+        .dark-mode footer {
+            background-color: #202225;
+            color: #b9bbbe;
+        }
+
+        .theme-toggle-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            margin: 0;
+        }
+
+        .theme-toggle-btn img {
+            width: 30px;
+            height: 30px;
+            transition: opacity 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Контакты</h1>
+</header>
+
+<nav>
+    <a href="index.html">Главная</a>
+    <a href="about.html">О нас</a>
+    <a href="contact.html">Контакты</a>
+    <a href="reviews.html">Отзывы</a>
+</nav>
+
+<!-- Переключатель темы -->
+<button id="toggle-theme" class="theme-toggle-btn" onclick="toggleTheme()">
+    <img src="/server/солнце.png" alt="Переключить тему">
+</button>
+
+<!-- Содержание страницы -->
+<div class="content">
+    <p>Контактная информация и форма связи.</p>
+</div>
+
+<footer>
+    <p>© 2024 JW Shop. Все права защищены.</p>
+</footer>
+
+<script>
+    function toggleTheme() {
+        document.body.classList.toggle('dark-mode');
+        document.body.classList.toggle('light-mode');
+        const currentTheme = document.body.classList.contains('dark-mode') ? 'dark' : 'light';
+        localStorage.setItem('theme', currentTheme);
+        updateThemeIcon();
+    }
+
+    function updateThemeIcon() {
+        const icon = document.querySelector('#toggle-theme img');
+        if (document.body.classList.contains('dark-mode')) {
+            icon.src = '/server/луна.png'; // Иконка для темной темы
+        } else {
+            icon.src = '/server/солнце.png'; // Иконка для светлой темы
+        }
+    }
+
+    window.onload = function() {
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark') {
+            document.body.classList.add('dark-mode');
+            document.body.classList.remove('light-mode');
+        } else {
+            document.body.classList.add('light-mode');
+            document.body.classList.remove('dark-mode');
+        }
+        updateThemeIcon();
+    }
+</script>
+
+</body>
+</html>

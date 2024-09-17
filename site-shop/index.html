@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JW Shop - Главная</title>
+    <style id="theme-style">
+        body {
+            font-family: 'Helvetica', sans-serif;
+            background-color: #f4f5f7;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        header {
+            background-color: #4c51bf;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+            font-size: 2.5em;
+            position: relative; /* For positioning the theme toggle button */
+        }
+
+        nav {
+            background-color: #6b7280;
+            padding: 15px;
+            text-align: center;
+            position: relative; /* For positioning the theme toggle button */
+        }
+
+        nav a {
+            margin: 0 20px;
+            text-decoration: none;
+            color: #fff;
+            font-weight: bold;
+        }
+
+        .theme-toggle-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            position: absolute;
+            top: 50%;
+            right: 20px;
+            transform: translateY(-50%);
+            transition: transform 0.3s ease, opacity 0.3s ease;
+            z-index: 1000;
+        }
+
+        .theme-toggle-btn img {
+            width: 40px;
+            height: 40px;
+            transition: opacity 0.3s ease;
+        }
+
+        .dark-mode .theme-toggle-btn img {
+            content: url('/server/луна.png'); /* Иконка для темной темы */
+        }
+
+        .light-mode .theme-toggle-btn img {
+            content: url('/server/солнце.png'); /* Иконка для светлой темы */
+        }
+
+        .search-bar {
+            margin: 20px auto;
+            text-align: center;
+        }
+
+        .search-bar input[type="text"] {
+            width: 40%;
+            padding: 10px;
+            font-size: 1.2em;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .search-bar button {
+            padding: 10px 20px;
+            font-size: 1.2em;
+            background-color: #4c51bf;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .search-bar button:hover {
+            background-color: #667eea;
+        }
+
+        .filter-options {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .filter-options select {
+            padding: 10px;
+            font-size: 1.2em;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .product-card {
+            display: inline-block;
+            width: 30%;
+            margin: 15px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .product-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .product-card img {
+            width: 100%;
+            border-radius: 10px;
+        }
+
+        .product-card h2 {
+            font-size: 1.5em;
+            margin: 10px 0;
+        }
+
+        .product-card p {
+            font-size: 1.2em;
+            color: #666;
+        }
+
+        .product-card .price {
+            font-size: 1.8em;
+            color: #333;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        .buy-button {
+            display: inline-block;
+            padding: 15px 30px;
+            background-color: #5865f2;
+            color: white;
+            text-decoration: none;
+            font-size: 1.2em;
+            font-weight: bold;
+            border-radius: 10px;
+            transition: background-color 0.3s ease;
+        }
+
+        .buy-button:hover {
+            background-color: #4752c4;
+        }
+
+        footer {
+            background-color: #6b7280;
+            color: #f4f5f7;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .dark-mode {
+            background-color: #36393f;
+            color: #f4f5f7;
+        }
+
+        .dark-mode header {
+            background-color: #202225;
+        }
+
+        .dark-mode nav {
+            background-color: #2f3136;
+        }
+
+        .dark-mode .product-card {
+            background-color: #2f3136;
+            color: #f4f5f7;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .dark-mode footer {
+            background-color: #202225;
+            color: #b9bbbe;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>JW Shop</h1>
+</header>
+
+<nav>
+    <a href="index.html">Главная</a>
+    <a href="about.html">О нас</a>
+    <a href="contact.html">Контакты</a>
+    <a href="reviews.html">Отзывы</a>
+    <!-- Переключатель темы -->
+    <button id="toggle-theme" class="theme-toggle-btn" onclick="toggleTheme()">
+        <img src="/server/луна.png" alt="Переключить тему">
+    </button>
+</nav>
+
+<!-- Поиск и фильтры -->
+<div class="search-bar">
+    <input type="text" placeholder="Поиск товаров..." id="search">
+    <button onclick="searchProducts()">Поиск</button>
+</div>
+
+<div class="filter-options">
+    <label for="filter">Сортировать по:</label>
+    <select id="filter">
+        <option value="price-asc">Цена: по возрастанию</option>
+        <option value="price-desc">Цена: по убыванию</option>
+        <option value="newest">Новинки</option>
+    </select>
+</div>
+
+<!-- Карточки товаров -->
+<main>
+    <div class="product-card">
+        <img src="product1.jpg" alt="Товар 1">
+        <h2>Товар 1</h2>
+        <p>Описание товара 1.</p>
+        <p class="price">5000₽</p>
+        <a href="product1.html" class="buy-button">Купить</a>
+    </div>
+
+    <div class="product-card">
+        <img src="product2.jpg" alt="Товар 2">
+        <h2>Товар 2</h2>
+        <p>Описание товара 2.</p>
+        <p class="price">4500₽</p>
+        <a href="product2.html" class="buy-button">Купить</a>
+    </div>
+
+    <div class="product-card">
+        <img src="product3.jpg" alt="Товар 3">
+        <h2>Товар 3</h2>
+        <p>Описание товара 3.</p>
+        <p class="price">6000₽</p>
+        <a href="product3.html" class="buy-button">Купить</a>
+    </div>
+</main>
+
+<footer>
+    <p>© 2024 JW Shop. Все права защищены.</p>
+</footer>
+
+<script>
+    function searchProducts() {
+        const searchInput = document.getElementById('search').value.toLowerCase();
+        alert('Поиск по запросу: ' + searchInput);
+    }
+
+    function toggleTheme() {
+        document.body.classList.toggle('dark-mode');
+        document.body.classList.toggle('light-mode');
+        const currentTheme = document.body.classList.contains('dark-mode') ? 'dark' : 'light';
+        localStorage.setItem('theme', currentTheme);
+        updateThemeIcon();
+    }
+
+    function updateThemeIcon() {
+        const icon = document.querySelector('#toggle-theme img');
+        if (document.body.classList.contains('dark-mode')) {
+            icon.src = '/server/луна.png'; // Иконка для темной темы
+        } else {
+            icon.src = '/server/солнце.png'; // Иконка для светлой темы
+        }
+    }
+
+    window.onload = function() {
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark') {
+            document.body.classList.add('dark-mode');
+            document.body.classList.remove('light-mode');
+        } else {
+            document.body.classList.add('light-mode');
+            document.body.classList.remove('dark-mode');
+        }
+        updateThemeIcon();
+    }
+</script>
+
+</body>
+</html>

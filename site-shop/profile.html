@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Профиль</title>
+    <style>
+        body {
+            font-family: 'Helvetica', sans-serif;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+
+        .profile-container {
+            margin: 50px auto;
+            padding: 20px;
+            width: 300px;
+            background-color: #f4f5f7;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .profile-container h2 {
+            margin-bottom: 20px;
+        }
+
+        .profile-container p {
+            font-size: 1.2em;
+        }
+
+        .logout-button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #f44336;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .logout-button:hover {
+            background-color: #e53935;
+        }
+    </style>
+</head>
+<body>
+    <h1>Ваш профиль</h1>
+    <div class="profile-container">
+        <h2 id="profile-name"></h2>
+        <p>Email: <span id="profile-email"></span></p>
+        <button class="logout-button" onclick="logout()">Выйти</button>
+    </div>
+
+    <script>
+        // Проверка на наличие профиля
+        window.onload = function() {
+            const userProfile = JSON.parse(localStorage.getItem('userProfile'));
+            if (userProfile) {
+                document.getElementById('profile-name').textContent = `Привет, ${userProfile.name}!`;
+                document.getElementById('profile-email').textContent = userProfile.email;
+            } else {
+                alert('Вы не авторизованы');
+                window.location.href = 'registration.html'; // Перенаправление на регистрацию, если нет данных
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('userProfile');
+            alert('Вы вышли из системы');
+            window.location.href = 'registration.html'; // Возврат на страницу регистрации
+        }
+    </script>
+</body>
+</html>
